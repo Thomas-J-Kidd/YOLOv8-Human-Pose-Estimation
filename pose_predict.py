@@ -212,3 +212,5 @@ def main(local_opt):
 if __name__ == "__main__":
     opt = parse_opt()
     main(opt)
+
+# use python pose_predict.py --model yolov8n-pose.pt --source 1 --is_video --view-img
