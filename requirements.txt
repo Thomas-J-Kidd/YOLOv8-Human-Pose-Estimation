@@ -19,3 +19,9 @@ pyyaml
 # Optional: If using a GPU, add torch and torchvision for YOLOv8
 torch
 torchvision
+
+
+# jupter notebook
+jupyter
+RISE
+notebook
