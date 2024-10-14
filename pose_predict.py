@@ -179,7 +179,7 @@ def main(local_opt):
             save_img=local_opt.save_img,
             exist_ok=local_opt.exist_ok,
         )
-    elif local_opt.source == "0" or local_opt.source == "1":  # if webcam
+    elif local_opt.source == "0" or local_opt.source == "1" or local_opt.source == "2":  # if webcam
         model = YOLO(local_opt.model)
         pose_estimation(
             model,
