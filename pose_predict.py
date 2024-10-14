@@ -10,8 +10,15 @@ from ultralytics.utils.files import increment_path
 def pose_estimation(
     model, source, is_video=False, view_img=False, save_img=False, exist_ok=False
 ):
-    if source != 0 and not Path(str(source)).exists():
-        raise FileNotFoundError(f"Source path '{source}' does not exist.")
+    # Check if the source is a webcam (integer source), otherwise check if it's a file
+    if isinstance(source, int) or source.isdigit():
+        # If it's a webcam index, proceed without checking the file system
+        pass
+    else:
+        # For non-webcam sources (image or video file), check if the file exists
+        if not Path(str(source)).exists():
+            raise FileNotFoundError(f"Source path '{source}' does not exist.")
+
 
     if is_video or source == 0:
         # Video setup
@@ -23,9 +30,8 @@ def pose_estimation(
         # Output setup
         save_dir = increment_path(Path("output") / "exp", exist_ok)
         save_dir.mkdir(parents=True, exist_ok=True)
-        output_filename = (
-            "webcam_output.mp4" if source == 0 else f"{Path(source).stem}.mp4"
-        )
+        output_filename = "webcam_output.mp4" if isinstance(source, int) else f"{Path(source).stem}.mp4"
+
         output_path = str(save_dir / output_filename)
         video_writer = cv2.VideoWriter(
             output_path, fourcc, fps, (frame_width, frame_height)
@@ -173,7 +179,7 @@ def main(local_opt):
             save_img=local_opt.save_img,
             exist_ok=local_opt.exist_ok,
         )
-    elif local_opt.source == "0":  # if webcam
+    elif local_opt.source == "0" or local_opt.source == "1":  # if webcam
         model = YOLO(local_opt.model)
         pose_estimation(
             model,
